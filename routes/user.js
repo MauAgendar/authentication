@@ -2,9 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
-const {register} = require("../controllers/register");
+const {register} = require("../controller/register");
 
-const {login} = require("../controllers/login");
+const {login} = require("../controller/login");
 
 router.post('/register' , register); //POST request to register the user
 

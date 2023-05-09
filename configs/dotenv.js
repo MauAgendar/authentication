@@ -1,5 +1,3 @@
-if (process.env.NODE_ENV !== 'production') {
-
-    require('dotenv').config() //Configuring dotenv during development stage
-    
-    }
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config(); //configurando dotenv durante desenvolvimento
+}

@@ -4,48 +4,50 @@ const client = require("../configs/database");
 
 const jwt = require("jsonwebtoken");
 
-//Login Function
+//Funcao de login
 exports.login = async (req, res) => {
-const { email, password } = req.body;
-try {
-const data = await client.query(`SELECT * FROM users WHERE email= $1;`, [email]) //Verifying if the user exists in the database
-const user = data.rows;
-if (user.length === 0) {
-res.status(400).json({
-error: "User is not registered, Sign Up first",
-});
-}
-else {
-bcrypt.compare(password, user[0].password, (err, result) => { //Comparing the hashed password
-if (err) {
-res.status(500).json({
-error: "Server error",
-});
-} else if (result === true) { //Checking if credentials match
-const token = jwt.sign(
-{
-email: email,
-},
-process.env.SECRET_KEY
-);
-res.status(200).json({
-message: "User signed in!",
-token: token,
-});
-}
-else {
-//Declaring the errors
-if (result != true)
-res.status(400).json({
-error: "Enter correct password!",
-});
-}
-})
-}
-} catch (err) {
-console.log(err);
-res.status(500).json({
-error: "Database error occurred while signing in!", //Database connection error
-});
-};
+  const { email, password } = req.body;
+  try {
+    const data = await client.query(`SELECT * FROM users WHERE email= $1;`, [
+      email,
+    ]); //Verificando se o usuario existe no banco
+    const user = data.rows;
+    if (user.length === 0) {
+      res.status(400).json({
+        error: "User nao registrado, cadastre-se primeiro",
+      });
+    } else {
+      bcrypt.compare(password, user[0].password, (err, result) => {
+        //comparando hash de senha
+        if (err) {
+          res.status(500).json({
+            error: "Erro de servidor",
+          });
+        } else if (result === true) {
+          // conferindo se os resultados conferem
+          const token = jwt.sign(
+            {
+              email: email,
+            },
+            process.env.SECRET_KEY
+          );
+          res.status(200).json({
+            message: "Usuario logado!",
+            token: token,
+          });
+        } else {
+          //Declarando erros
+          if (result != true)
+            res.status(400).json({
+              error: "Senha incorreta!",
+            });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: "Erro no banco de dados ao logar!", //Erro de conexão com o banco
+    });
+  }
 };

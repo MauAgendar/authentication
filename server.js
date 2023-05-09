@@ -1,6 +1,6 @@
-const  express  =  require("express");
+const express = require("express");
 const cors = require("cors");
-const app = express(); //Initialized express
+const app = express(); //Inicializando express
 
 app.use(express.json());
 app.use(cors());
@@ -8,34 +8,26 @@ app.use(cors());
 const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
-
-res.status(200).send("Engine Started, Ready to take off!");
-
-})
-
-app.listen(port, () => {
-
-console.log(`Here we go, Engines started at ${port}.`);
-
-})
-
-require("./configs/dotenv");
-const  client  =  require("./configs/database");
-
-client.connect((err) => { //Connected Database
-
-if (err) {
-
-console.log(err);
-
-}
-
-else {
-
-console.log("Data logging initiated!");}
-
+  res.status(200).send("funfoso");
 });
 
-const  user  =  require("./routes/user");
+app.listen(port, () => {
+  console.log(`Servidor na porta ${port}.`);
+});
 
-app.use("/user",  user);  //Route for /user endpoint of API
+require("./configs/dotenv");
+const client = require("./configs/database");
+
+client.connect((err) => {
+  //Conectado ao banco
+
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Registrando dodos...");
+  }
+});
+
+const user = require("./routes/user");
+
+app.use("/user", user);

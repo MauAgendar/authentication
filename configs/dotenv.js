@@ -1,3 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config(); //configurando dotenv durante desenvolvimento
+    import("dotenv").then((dotenv) => {
+        dotenv.config(); // Configuring dotenv during development
+    });
 }
